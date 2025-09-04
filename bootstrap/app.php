@@ -23,10 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
     })
-    ->withProviders([
-        \Inertia\ServiceProvider::class,              
-        \Tighten\Ziggy\ZiggyServiceProvider::class,
-    ])
+//    ->withProviders([
+//        \Inertia\ServiceProvider::class,
+//        \Tighten\Ziggy\ZiggyServiceProvider::class,
+//    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
