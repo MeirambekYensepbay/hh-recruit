@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withProviders([
-        \Inertia\InertiaServiceProvider::class,
+        \Inertia\ServiceProvider::class,              
         \Tighten\Ziggy\ZiggyServiceProvider::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
