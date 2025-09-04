@@ -64,4 +64,10 @@ class HHController extends \App\Http\Controllers\Controller
             ->post(url: '/webhook/fed4a5c4-61fe-4cff-912e-6bce27efaef4', data: $arr);
         return response()->json();
     }
+
+    public function setResponses(Request $request)
+    {
+        $arr = $request->all();
+        dd($arr);
+    }
 }
