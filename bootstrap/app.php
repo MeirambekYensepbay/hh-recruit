@@ -14,6 +14,16 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withProviders([
+        \Inertia\ServiceProvider::class,
+        \Tighten\Ziggy\ZiggyServiceProvider::class,
+    ])
+    ->withProviders(function () {
+        if (app()->environment('local') && class_exists(\Laravel\Pail\PailServiceProvider::class)) {
+            return [\Laravel\Pail\PailServiceProvider::class];
+        }
+        return [];
+    })
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
@@ -23,10 +33,6 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
     })
-//    ->withProviders([
-//        \Inertia\ServiceProvider::class,
-//        \Tighten\Ziggy\ZiggyServiceProvider::class,
-//    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
