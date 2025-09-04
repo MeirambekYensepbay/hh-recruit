@@ -41,7 +41,7 @@
 
         @routes
         @inertiaHead
-        @vite(['resources/js/app.ts', "resources/js/pages/app.ts"])
+        @vite(['resources/js/app.ts', "resources/js/pages/welcome.vue"])
     </head>
     <body class="font-sans antialiased">
         @inertia
