@@ -27,6 +27,7 @@ type Responses = {
     response: Response;
 };
 type Response = {
+    id: number;
     vacancy_id: string;
     response_id: string;
     fio: string;
@@ -45,6 +46,13 @@ const breadcrumbs = [
 
 const mustHave = ref('');
 const niceToHave = ref('');
+const categoryClass = ref({
+    A: 'green',
+    B: 'orange',
+    C: 'red',
+} as const);
+
+type Category = keyof typeof categoryClass.value; // 'A' | 'B' | 'C'
 const analyseResponse = async () => {
     try {
         const response = await axios.post(`/api/vacancy/analyse`, {
@@ -64,7 +72,32 @@ const analyseResponse = async () => {
     }
 }
 </script>
-
+<style scoped>
+    .green, .orange, .red {
+        text-align: center;
+        border-radius: 20px;
+        width: 50px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .green {
+        background: #c6eac2;
+        border: 1px solid #2eb88a;
+        color: #2eb88a;
+    }
+    .orange {
+        background: #ffd8bc;
+        border: 1px solid #e88c30;
+        color: #e88c30;
+    }
+    .red {
+        background: rgb(255, 190, 194);
+        border: 1px solid #ef4e4e;
+        color: #ef4e4e;
+    }
+</style>
 <template>
     <Head :title="props.vacancy?.name ?? 'Vacancy'" />
 
@@ -106,9 +139,10 @@ const analyseResponse = async () => {
                         </div>
                         <div v-if="resume.response == null">
                         </div>
-                        <div v-else>
-                            {{ resume.response.category }}
-                        </div>
+                        <a :href="route('show.vacancy', resume.response.id)" v-else style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; cursor: pointer" >
+                            <span :class="resume.response.category != null ? categoryClass[resume.response.category as Category] : ''">{{ resume.response.category }}</span>
+                        </a>
+
                     </div>
 
                     <div style="padding-top: 20px">

@@ -93,4 +93,12 @@ class HHController extends \App\Http\Controllers\Controller
         $arr = $request->only(['vacancy_id', 'response_id', 'fio', 'email', 'phone', 'comment', 'category', 'title']);
         Response::query()->create($arr);
     }
+
+    public function showVacancy(int $id): \Inertia\Response
+    {
+        $response = Response::query()->find($id);
+        return Inertia::render('ShowVacancy', [
+            'response' => $response,
+        ]);
+    }
 }

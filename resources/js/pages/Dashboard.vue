@@ -55,6 +55,7 @@ onMounted(() => {
                 <div
                     class="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                     v-for="vacancy in vacancies"
+                    v-bind:key="vacancy.id"
                 >
                     <div style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; height: 100%">
                         <div style="display: flex; flex-direction: column;">
