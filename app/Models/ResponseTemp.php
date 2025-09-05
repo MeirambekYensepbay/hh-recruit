@@ -10,6 +10,6 @@ class ResponseTemp extends Model
 
     public function response(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Response::class, 'response_id', 'response_id');
+        return $this->belongsTo(Response::class, 'fio', 'fio');
     }
 }

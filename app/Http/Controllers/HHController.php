@@ -46,7 +46,7 @@ class HHController extends \App\Http\Controllers\Controller
 
                 ResponseTemp::query()->updateOrCreate([
                     'vacancy_id' => $vacancyId,
-                    'response_id' => data_get($i, 'id'),
+                    'fio' => $fio,
                 ],[
                     'fio' => $fio,
                     'url'      => data_get($resume, 'download.pdf.url')
