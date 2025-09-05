@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('response_id');
             $table->string('fio');
-            $table->string('url');
+            $table->text('url');
             $table->string('vacancy_id');
             $table->timestamps();
         });
