@@ -33,8 +33,8 @@ const breadcrumbs = [
                     <h1 class="text-2xl font-semibold">{{props.response.fio}}</h1>
                     <h2 class="text-xl font-semibold mt-1 text-gray-500">{{props.response.title}}</h2>
                     <p class="prose mt-1">{{props.response.comment}}</p>
-                    <a class="mt-1" :href="'tel:'+props.response.phone">{{props.response.phone}}</a>
-                    <a class="mt-1" :href="'mailto:'+props.response.email">{{props.response.email}}</a>
+                    <p><a class="font-semibold mt-1" :href="'tel:'+props.response.phone">{{props.response.phone}}</a></p>
+                    <p><a class="font-semibold mt-1" :href="'mailto:'+props.response.email">{{props.response.email}}</a></p>
                 </div>
             </div>
         </div>
