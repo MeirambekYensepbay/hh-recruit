@@ -43,7 +43,7 @@ class HHController extends \App\Http\Controllers\Controller
             ->map(function ($i) use ($vacancyId) {
                 $resume = data_get($i, 'resume', []);
                 $fio = data_get($resume, 'last_name').' '.data_get($resume, 'first_name').' '.data_get($resume, 'middle_name');
-
+                $fio = rtrim($fio);
                 ResponseTemp::query()->updateOrCreate([
                     'vacancy_id' => $vacancyId,
                     'fio' => $fio,
