@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import axios from 'axios';
 
 type HHSalary = { from?: number | null; to?: number | null; currency?: string | null; gross?: boolean };
@@ -19,26 +19,32 @@ type Vacancy = {
     languages?: [{ name: string; }];
 };
 
-const props = defineProps<{ vacancy: Vacancy }>();
+type Responses = {
+    fio: string;
+    url: string;
+    response_id: string;
+    vacancy_id: string;
+    response: Response;
+};
+type Response = {
+    vacancy_id: string;
+    response_id: string;
+    fio: string;
+    email: string;
+    phone: string;
+    comment: string;
+    category: string;
+    title: string;
+};
+
+const props = defineProps<{ vacancy: Vacancy, resumes: [Responses]}>();
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: props.vacancy?.name ?? 'Вакансия', href: '' },
 ];
-const responses = ref([]);
+
 const mustHave = ref('');
 const niceToHave = ref('');
-const fetch = async () => {
-    try {
-        const response = await axios.get(`/api/vacancy/response-urls/`+props.vacancy.id);
-        responses.value = response.data.resumes;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-onMounted(() =>{
-    fetch()
-});
 const analyseResponse = async () => {
     try {
         const response = await axios.post(`/api/vacancy/analyse`, {
@@ -50,7 +56,6 @@ const analyseResponse = async () => {
                 min_years: props.vacancy.experience?.name,
                 languages: ''
             },
-            resumes: responses.value
         }
     );
         console.log(response)
@@ -92,15 +97,20 @@ const analyseResponse = async () => {
                     </a>
                 </div>
 
-                <!-- Сырой объект (для отладки) -->
                 <div class="relative overflow-hidden rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
                     <div class="relative overflow-hidden rounded-xl mb-2 text-sm text-gray-500 dark:border-sidebar-border">Список резюме</div>
-<!--                    <pre class="overflow-auto text-xs">{{ JSON.stringify(responses, null, 2) }}</pre>-->
-                    <div class="border border-sidebar-border/70 p-4" v-for="response in responses" v-bind:key="response.id">
-                        <p style="font-size: 12px; font-weight: bold; color: gray">{{response.id}}</p>
-                        <p>{{response.fio}}</p>
+                    <div class="border border-sidebar-border/70 p-2 grid auto-rows-min gap-4 md:grid-cols-2" v-for="resume in props.resumes" v-bind:key="resume.response_id">
+                        <div>
+                            <p style="font-size: 12px; font-weight: bold; color: gray">{{resume.response_id}}</p>
+                            <p>{{resume.fio}}</p>
+                        </div>
+                        <div v-if="resume.response == null" style="background: red">
+                            nothing happend
+                        </div>
+                        <div v-else>
+                            {{ resume.response.category }}
+                        </div>
                     </div>
-<!--                    <p v-else style="color: gray; padding-top: 20px; font-size: 12px; font-weight: bold">Пусто</p>-->
 
                     <div style="padding-top: 20px">
                         <p>Обязательные требования</p>
