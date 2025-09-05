@@ -17,7 +17,7 @@ type Response = {
 
 const breadcrumbs = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: props.response?.title ?? 'Вакансия', href: '' },
+    { title: props.response?.title ?? 'Вакансия', href: '/vacancy/'+props.response.vacancy_id },
     { title: props.response?.fio ?? 'Кандидат', href: '' },
 ];
 
@@ -27,9 +27,15 @@ const breadcrumbs = [
     <Head :title="props.response.fio"/>
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <h1>{{props.response.fio}}</h1>
-        <h2>{{props.response.title}}</h2>
-        <p>{{props.response.comment}}</p>
+        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
+                <div class="relative overflow-hidden rounded-xl border border-sidebar-border/70 p-4 md:col-span-2 dark:border-sidebar-border">
+                    <h1 class="text-2xl font-semibold">{{props.response.fio}}</h1>
+                    <h2 class="mt-1">{{props.response.title}}</h2>
+                    <p class="prose">{{props.response.comment}}</p>
+                </div>
+            </div>
+        </div>
     </AppLayout>
 </template>
 
