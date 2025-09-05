@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+//use App\Models\Response;
 use App\Services\HHClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -36,19 +37,23 @@ class HHController extends \App\Http\Controllers\Controller
 
     public function buildVacancyWithUrls($payload)
     {
-        // 3) Извлекаем PDF-ссылки из items (оба варианта путей HH поддержаны)
-        $urls = collect(data_get($payload, 'items', []))
-            ->map(fn ($i) =>
-                data_get($i, 'resume.download.pdf.url')
-                ?? data_get($i, 'resume.actions.download.pdf.url')
-            )
+        $resumes = collect(data_get($payload, 'items', []))
+            ->map(function ($i) {
+                $resume = data_get($i, 'resume', []);
+                $fio = data_get($resume, 'last_name').' '.data_get($resume, 'first_name').' '.data_get($resume, 'middle_name');
+                return [
+                    'id'       => data_get($i, 'id'),
+                    'fio'      => $fio,
+                    'url'      => data_get($resume, 'download.pdf.url')
+                        ?? data_get($resume, 'actions.download.pdf.url'),
+                ];
+            })
             ->filter()
             ->unique()
             ->values()
             ->all();
-        // 4) Результат в нужном формате
         $result = [
-            'urls'    => $urls,
+            'resumes'    => $resumes,
         ];
 
         return response()->json($result);
@@ -68,6 +73,10 @@ class HHController extends \App\Http\Controllers\Controller
     public function setResponses(Request $request)
     {
         $arr = $request->all();
-        dd($arr);
+
+        foreach ($arr['output'] as $key => $value) {
+            $decoded = json_decode($value, true)[0];
+            Response::create($decoded);
+        }
     }
 }

@@ -30,7 +30,7 @@ const niceToHave = ref('');
 const fetch = async () => {
     try {
         const response = await axios.get(`/api/vacancy/response-urls/`+props.vacancy.id);
-        responses.value = response.data.urls;
+        responses.value = response.data.resumes;
     } catch (error) {
         console.error(error);
     }
@@ -43,13 +43,14 @@ const analyseResponse = async () => {
     try {
         const response = await axios.post(`/api/vacancy/analyse`, {
             vacancy: {
+                vacancy_id: props.vacancy.id,
                 title: props.vacancy.name,
-                    must_have: mustHave.value,
+                must_have: mustHave.value,
                 nice_to_have: niceToHave.value,
                 min_years: props.vacancy.experience?.name,
                 languages: ''
             },
-            urls: responses.value
+            resumes: responses.value
         }
     );
         console.log(response)
@@ -93,9 +94,13 @@ const analyseResponse = async () => {
 
                 <!-- Сырой объект (для отладки) -->
                 <div class="relative overflow-hidden rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
-                    <div class="mb-2 text-sm text-gray-500">Список резюме</div>
-                    <pre v-if="responses.length != 0" class="overflow-auto text-xs">{{ JSON.stringify(responses, null, 2) }}</pre>
-                    <p v-else style="color: gray; padding-top: 20px; font-size: 12px; font-weight: bold">Пусто</p>
+                    <div class="relative overflow-hidden rounded-xl mb-2 text-sm text-gray-500 dark:border-sidebar-border">Список резюме</div>
+<!--                    <pre class="overflow-auto text-xs">{{ JSON.stringify(responses, null, 2) }}</pre>-->
+                    <div class="border border-sidebar-border/70 p-4" v-for="response in responses" v-bind:key="response.id">
+                        <p style="font-size: 12px; font-weight: bold; color: gray">{{response.id}}</p>
+                        <p>{{response.fio}}</p>
+                    </div>
+<!--                    <p v-else style="color: gray; padding-top: 20px; font-size: 12px; font-weight: bold">Пусто</p>-->
 
                     <div style="padding-top: 20px">
                         <p>Обязательные требования</p>
