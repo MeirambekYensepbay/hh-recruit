@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-//use App\Models\Response;
+use App\Models\Response;
 use App\Services\HHClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -72,11 +72,7 @@ class HHController extends \App\Http\Controllers\Controller
 
     public function setResponses(Request $request)
     {
-        $arr = $request->all();
-
-        foreach ($arr['output'] as $key => $value) {
-            $decoded = json_decode($value, true)[0];
-            Response::create($decoded);
-        }
+        $arr = $request->only(['vacancy_id', 'fio', 'email', 'phone', 'comment', 'category', 'title']);
+        Response::create($arr);
     }
 }
