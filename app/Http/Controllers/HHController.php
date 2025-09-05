@@ -49,7 +49,8 @@ class HHController extends \App\Http\Controllers\Controller
                     'response_id' => data_get($i, 'id'),
                 ],[
                     'fio' => $fio,
-                    'url' => data_get($resume, 'url'),
+                    'url'      => data_get($resume, 'download.pdf.url')
+                        ?? data_get($resume, 'actions.download.pdf.url'),
                     'response_id' => data_get($i, 'id'),
                     'vacancy_id' => $vacancyId,
                 ]);
