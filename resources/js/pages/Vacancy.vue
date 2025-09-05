@@ -104,8 +104,7 @@ const analyseResponse = async () => {
                             <p style="font-size: 12px; font-weight: bold; color: gray">{{resume.response_id}}</p>
                             <p>{{resume.fio}}</p>
                         </div>
-                        <div v-if="resume.response == null" style="background: red">
-                            nothing happend
+                        <div v-if="resume.response == null">
                         </div>
                         <div v-else>
                             {{ resume.response.category }}
